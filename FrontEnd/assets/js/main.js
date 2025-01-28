@@ -1,5 +1,29 @@
-// Fonction pour récupérer les données de l'API
-async function fetchData() {
+import { displayWorks } from "./work.js";
+import {
+  displayCategories,
+  createFilter,
+  filtering,
+} from "./category_filter.js";
+
+async function fetchCategories() {
+  try {
+    const catResponse = await fetch("http://localhost:5678/api/categories");
+
+    if (!catResponse.ok) {
+      throw new Error(`Erreur : ${response.status}`);
+    }
+
+    const categories = await catResponse.json();
+    displayCategories(categories);
+
+    console.log("récupération des catégories");
+  } catch (error) {
+    console.error("Une erreur est survenue (catégories) :", error);
+  }
+}
+
+// Fonction pour récupérer les travaux de l'API
+async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
 
@@ -7,32 +31,20 @@ async function fetchData() {
       throw new Error(`Erreur : ${response.status}`);
     }
 
-    const data = await response.json(); // Transforme la réponse en JSON
-    displayData(data); // Appelle la fonction pour afficher les données
-    console.log(data);
-    console.log(data[0].title);
+    const works = await response.json();
+    displayWorks(works);
+
+    console.log("affichage des travaux");
   } catch (error) {
-    console.error("Une erreur est survenue :", error);
+    console.error(
+      "Une erreur est survenue lors de la récuparation des travaux:",
+      error
+    );
   }
 }
 
-// Fonction pour afficher les données dans le HTML
-function displayData(items) {
-  const list = document.querySelector(".gallery");
-
-  //   Itère sur chaque élément
-  items.forEach((item) => {
-    const listItem = document.createElement("figure");
-    const listImage = document.createElement("img");
-    listItem.appendChild(listImage);
-    const listTitle = document.createElement("figcaption");
-    listItem.appendChild(listTitle);
-    listImage.setAttribute("src", item.imageUrl);
-    listImage.setAttribute("alt", item.title);
-    listTitle.textContent = item.title;
-    list.appendChild(listItem);
-  });
-}
-
 // Appelle la fonction au chargement de la page
-fetchData();
+
+fetchWorks();
+fetchCategories().then(filtering);
+createFilter();
