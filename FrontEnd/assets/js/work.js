@@ -25,6 +25,10 @@ export function createFigureElement(work) {
   const figureTitle = document.createElement("figcaption");
   figureTitle.textContent = work.title;
 
+  const category = work.category.id;
+  console.log(category);
+  figure.classList.add(category);
+
   figure.appendChild(figureImage);
   figure.appendChild(figureTitle);
 
