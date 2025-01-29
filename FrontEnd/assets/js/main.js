@@ -35,6 +35,7 @@ async function fetchWorks() {
     displayWorks(works);
 
     console.log("affichage des travaux");
+    console.log(works);
   } catch (error) {
     console.error(
       "Une erreur est survenue lors de la récuparation des travaux:",
@@ -42,8 +43,6 @@ async function fetchWorks() {
     );
   }
 }
-
-// Appelle la fonction au chargement de la page
 
 fetchWorks();
 fetchCategories().then(filtering);

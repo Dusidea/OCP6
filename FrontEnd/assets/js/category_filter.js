@@ -7,14 +7,14 @@ export function createFilter() {
   filter.setAttribute("class", "filter");
   const button = document.createElement("button");
   button.innerHTML = `Tous`;
+  button.setAttribute("id", "0");
   const gallery = document.querySelector(".gallery");
   filter.appendChild(button);
   filterParent.insertBefore(filter, gallery);
   console.log("filtre créé");
 }
 
-// j'essaie de récuperer les categories et créer un bouton par category
-
+// récupérer les categories et créer un bouton par category
 export function displayCategories(categories) {
   categories.forEach((category) => {
     return new Promise((resolve) => {
@@ -30,16 +30,32 @@ export function displayCategories(categories) {
   });
 }
 
-//selection de un empeche selection de l'autre
-//si coché on cherche id de category +> j'anticipe en posant des id sur les objets boutons qui correspondent aux id du tableau ?
-
+//Détection des clics sur les boutons et filtrage des résultats
 export function filtering() {
   console.log("fonction filtering");
   const buttonList = document.querySelectorAll("button");
+  const figureList = document.querySelectorAll("figure");
+
   buttonList.forEach((button) => {
     console.log("bouton de la liste " + button.textContent);
+
     button.addEventListener("click", () => {
+      figureList.forEach((figure) => {
+        figure.classList.remove("hidden");
+      });
+
+      buttonList.forEach((button) =>
+        button.classList.remove("button-selected")
+      );
       console.log("clic");
+
+      button.classList.add("button-selected");
+      figureList.forEach((figure) => {
+        const workCategory = figure.classList;
+        if (button.id != "0" && workCategory != button.id) {
+          figure.classList.add("hidden");
+        }
+      });
     });
   });
   console.log("fin fonction filtering");
