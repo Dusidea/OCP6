@@ -29,13 +29,18 @@
       <section id="login">
         <h2>Log in</h2>
 
-        <form action="#" method="post">
+        <form action="#" method="post" id="loginform" class="loginformclass">
           <label for="email">Email</label>
           <input type="email" name="email" id="email" />
           <label for="password">Mot de passe</label>
           <input type="password" name="password" id="password" />
-          <input type="submit" value="Se connecter" />
+          <input type="submit" value="Se connecter" id="submit" />
         </form>
+
+        <p id="logerror" class="hidden">
+          Les identifiants de connexion sont erronés. Veuillez vérifier votre
+          email et votre mot de passe.
+        </p>
 
         <a id="forgotten" href="#">Mot de passe oublié</a>
       </section>
@@ -48,5 +53,5 @@
       </nav>
     </footer>
   </body>
-  <!-- <script type="module" src="./assets/js/main.js"></script> -->
+  <script type="module" src="./assets/js/login.js"></script>
 </html>

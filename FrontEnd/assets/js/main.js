@@ -3,23 +3,17 @@ import {
   displayCategories,
   createFilter,
   filtering,
+  fetchCategories,
 } from "./category_filter.js";
+// import { login } from "./login.js";
 
-async function fetchCategories() {
-  try {
-    const catResponse = await fetch("http://localhost:5678/api/categories");
+import {} from "./modal.js";
 
-    if (!catResponse.ok) {
-      throw new Error(`Erreur : ${response.status}`);
-    }
-
-    const categories = await catResponse.json();
-    displayCategories(categories);
-
-    console.log("récupération des catégories");
-  } catch (error) {
-    console.error("Une erreur est survenue (catégories) :", error);
-  }
+function editMode() {
+  const banner = document.querySelector(".edit_header");
+  const editButton = document.querySelector(".edit_button");
+  banner.classList.remove("hidden");
+  editButton.classList.remove("hidden");
 }
 
 // Fonction pour récupérer les travaux de l'API
@@ -34,8 +28,7 @@ async function fetchWorks() {
     const works = await response.json();
     displayWorks(works);
 
-    console.log("affichage des travaux");
-    console.log(works);
+    console.log("Main: fetchworks : affichage des travaux");
   } catch (error) {
     console.error(
       "Une erreur est survenue lors de la récuparation des travaux:",
@@ -45,5 +38,13 @@ async function fetchWorks() {
 }
 
 fetchWorks();
-fetchCategories().then(filtering);
-createFilter();
+
+if (sessionStorage.myToken != null) {
+  console.log("Main : test editmode connecté en tant qu'admin");
+  editMode();
+} else {
+  fetchCategories().then(filtering);
+
+  createFilter();
+  console.log("Main : test editmode NON connecté en tant qu'admin");
+}

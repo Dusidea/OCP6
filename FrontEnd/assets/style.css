@@ -3,6 +3,10 @@
    License: none (public domain)
 */
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body,
 div,
@@ -263,10 +267,10 @@ button {
 }
 #contact form,
 #login form {
-  text-align: left;
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
+  text-align: left;
+  margin-top: 30px;
 }
 
 #contact input,
@@ -308,7 +312,7 @@ footer nav ul {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 #forgotten {
@@ -323,4 +327,245 @@ footer nav ul {
   flex-direction: column;
   min-height: 100vh;
   justify-content: center;
+}
+
+#logerror {
+  font-size: 20px;
+  font-weight: 300;
+  color: white;
+  background-color: #b1663c;
+  position: relative;
+  top: -370px;
+}
+
+.edit_header {
+  background-color: black;
+  color: white;
+  width: 100%;
+  height: 59px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 21px;
+}
+
+.edit_button {
+  font-size: 14px;
+  font-weight: 400;
+  color: black;
+  position: relative;
+  left: 700px;
+  top: -20px;
+  display: flex;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+#modal1 {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-wrapper {
+  overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  width: 630px;
+  min-height: 670px;
+  padding: 30px;
+}
+
+.modal-wrapper_gallery {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(76px, auto);
+  width: fit-content;
+  block-size: fit-content;
+  /* margin-top: 20px; */
+  margin-bottom: 20px;
+}
+
+.modal-wrapper_gallery img {
+  /* display: grid; */
+  width: 76px;
+  block-size: fit-content;
+}
+
+.modal-wrapper_gallery figure {
+  position: relative;
+}
+
+.modal_title {
+  font-size: 26px;
+  font-weight: 400;
+  padding: 23px;
+  /* margin-top: 37px;
+  margin-bottom: 15px; */
+}
+
+.modal_close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  height: 24px;
+  width: 24px;
+}
+
+.modal_close i {
+  height: 12px;
+  width: 12px;
+}
+
+.modal_button {
+  background-color: #1d6154;
+  color: white;
+  position: absolute;
+  bottom: 30px;
+}
+
+hr {
+  width: 67%;
+  color: #b3b3b3;
+  border-style: solid;
+  position: absolute;
+  bottom: 70px;
+}
+
+.remove_button {
+  min-width: 17px;
+  padding: 0;
+  width: 17px;
+  height: 17px;
+  background-color: black;
+  color: white;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 2px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove_button .fa-trash-can {
+  font-size: 10px;
+}
+
+.modal_return {
+  font-size: 21px;
+  position: absolute;
+  top: 26px;
+  left: 30px;
+}
+
+.button_reset {
+  min-width: 0;
+  color: black;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.modal_form {
+  display: flex;
+  flex-direction: column;
+  width: 420px;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 10px;
+}
+
+.modal_form input,
+.modal_form select {
+  width: 100%;
+  box-shadow: 0px 4px 14px 0px #00000017;
+  border: 0;
+  height: 51px;
+}
+
+.modal_form #addform_file {
+  width: 67%;
+  box-shadow: 0;
+  border: 0;
+
+  background-color: #e8f1f6;
+  width: 420px;
+  height: 169px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #b9c5cc;
+}
+
+.modal_form option {
+  color: black;
+  font-size: 12px;
+}
+
+.modal_form_photo {
+  background-color: #e8f1f6;
+  width: 420px;
+  height: 169px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #b9c5cc;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+.modal_form_photo_icon {
+  font-size: 76px;
+}
+
+.modal_form_button {
+  font-family: "Syne";
+  font-weight: 700;
+  text-align: center;
+  border-radius: 60px;
+  height: 37px;
+  padding: 10px;
+  margin: 5px;
+  color: #306685;
+  background-color: #cbd6dc;
+  border: 0;
+  width: 173px;
+}
+
+hr {
+  margin-top: 30px;
+  position: relative;
+  top: 0px;
+  width: 100%;
+}
+
+.modal_form_text {
+  color: #444444;
+  font-size: 10px;
+}
+
+#validate_add_button {
+  background-color: #a7a7a7;
+  border: 0;
+  width: 237px;
 }

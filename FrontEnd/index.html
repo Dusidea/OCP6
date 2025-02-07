@@ -10,10 +10,20 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
   <body>
+    <div class="hidden edit_header">
+      <i class="fa-regular fa-pen-to-square"></i> Mode édition
+    </div>
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
@@ -50,9 +60,78 @@
         </article>
       </section>
       <section id="portfolio">
-        <h2>Mes Projets</h2>
+        <h2>
+          Mes Projets
+          <a class="hidden edit_button" href="#modal">
+            <i class="fa-regular fa-pen-to-square"></i> modifier
+          </a>
+        </h2>
+        <aside
+          id="modal1"
+          class="js-modal hidden"
+          role="dialog"
+          aria-labelledby="titlemodal"
+        >
+          <div class="modal-wrapper" id="modal_delete">
+            <h3 class="modal_title">Galerie photo</h3>
+            <button class="modal_close button_reset">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-wrapper_gallery"></div>
+            <hr />
+            <button class="modal_button" id="add_button">
+              Ajouter une photo
+            </button>
+          </div>
+
+          <div class="modal-wrapper hidden" id="modal_add">
+            <h3 class="modal_title">Ajout photo</h3>
+            <button class="modal_close button_reset">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <button class="button_reset">
+              <i class="fa-solid fa-arrow-left modal_return"></i>
+            </button>
+
+            <form class="modal_form" action="#" method="post" id="addform">
+              <label for="addform_file" class="modal_form_photo">
+                <i class="fa-regular fa-image modal_form_photo_icon"></i>
+                <p class="modal_form_button">+ Ajouter photo</p>
+                <p class="modal_form_text">jpg, png : 4mo max</p>
+              </label>
+              <input
+                type="file"
+                id="addform_file"
+                name="addform_file"
+                accept=".jpg,.png"
+                class="hidden"
+                required
+              />
+
+              <label for="addform_titre">Titre</label>
+              <input
+                type="text"
+                name="addform_titre"
+                id="addform_titre"
+                autofocus
+                required
+              />
+              <label for="addform_categorie">Catégorie</label>
+              <select
+                name="addform_categorie"
+                id="addform_categorie"
+                required
+              ></select>
+
+              <label for="validate_add_button"> <hr /></label>
+              <input type="submit" value="Valider" id="validate_add_button" />
+            </form>
+          </div>
+        </aside>
+
         <div class="gallery"></div>
       </section>
+
       <section id="contact">
         <h2>Contact</h2>
         <p>Vous avez un projet ? Discutons-en !</p>
