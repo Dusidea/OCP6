@@ -1,5 +1,7 @@
 // Fonction pour afficher les données dans le HTML (limite les rechargement de type paint du DOM)
 export function displayWorks(works) {
+  console.log("entering displayworks");
+
   const mainGallery = document.querySelector(".gallery");
   mainGallery.innerHTML = "";
 
@@ -36,7 +38,7 @@ export function createFigureElement(work) {
 
   const category = work.category.id;
 
-  figure.classList.add(category);
+  figure.setAttribute("category", category);
 
   figure.appendChild(figureImage);
   figure.appendChild(figureTitle);
@@ -60,7 +62,8 @@ export function createModalFigure(work) {
   removeIcon.innerHTML = trashCan;
 
   modalFigure.appendChild(removeIcon);
-  const token = sessionStorage.getItem("myToken");
+  // const token = sessionStorage.getItem("myToken");
+
   // removeIcon.addEventListener("click", removeWork);
   // removeIcon.addEventListener("click", () => {
   //   console.log(
@@ -130,18 +133,48 @@ export function createModalFigure(work) {
 
 // removeWork();
 
-//ajout d'un nouveau projet
-async function addWork() {
-  const formData = new FormData();
-  // const formTitle = document.getElementById("addform_titre");
-  // const formCategory = document.getElementById("addform_categorie");
-  formData.append("id", "5");
-  formData.append("userId", "1");
-  formElement = document.getElementById("addform");
-
-  const request = new XMLHttpRequest();
-  request.open("POST", "http://localhost:5678/api/works");
-  request.send(new formData(formElement));
+function verifierChamp(champ) {
+  // Si le champ est vide, on lance une exception
+  if (champ.value === "") {
+    throw new Error(`Le champ ${champ.id} est vide`);
+  }
 }
 
-// addWork();
+//ajout d'un nouveau projet
+export async function addWork() {
+  const form = document.getElementById("addform");
+  const boutonValidation = document.getElementById("validate_add_button");
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    const image = formData.get("image");
+    const titre = formData.get("title");
+    const categorie = formData.get("category");
+
+    const token = sessionStorage.getItem("myToken");
+    if (image && titre && categorie) {
+      boutonValidation.classList.remove("validate_add_button");
+      console.log("condition existance des champs vérifiée");
+    }
+    try {
+      verifierChamp(image);
+      verifierChamp(titre);
+      verifierChamp(categorie);
+
+      const addWorkResponse = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const result = await addWorkResponse.json();
+      console.log("projet ajouté");
+    } catch (error) {
+      console.log("Une erreur est survenue : " + error.message);
+    }
+  });
+}

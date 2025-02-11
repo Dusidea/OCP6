@@ -564,8 +564,8 @@ hr {
   font-size: 10px;
 }
 
-#validate_add_button {
-  background-color: #a7a7a7;
+input.validate_add_button {
   border: 0;
   width: 237px;
+  background-color: #a7a7a7;
 }

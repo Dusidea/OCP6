@@ -13,14 +13,8 @@ export async function fetchCategories() {
       document.querySelector(".filter").childElementCount < 2
     ) {
       displayCategories(categories);
-      console.log(
-        "Non connecté en tant qu'admin (current function = fetchcategories>displayCategrories"
-      );
     } else {
       displayModalCategories(categories);
-      console.log(
-        "Oui connecté en tant qu'admin (current function = fetchcategories>displayMODALCategrories"
-      );
     }
 
     console.log("récupération des catégories");
@@ -57,9 +51,6 @@ export function displayCategories(categories) {
       resolve();
     });
   });
-  console.log(
-    "CategoryFilter > displayCategories : boutons catégories filtre créés"
-  );
 }
 
 export function displayModalCategories(categories) {
@@ -67,17 +58,14 @@ export function displayModalCategories(categories) {
     return new Promise((resolve) => {
       const dropdownCategory = document.getElementById("addform_categorie");
       const dropdownOption = document.createElement("option");
-      console.log(
-        "DisplayMODALcategories création d'une option de catégorie pour la modale :"
-      );
-      dropdownOption.setAttribute("value", category.name);
+
+      dropdownOption.setAttribute("value", category.id);
       dropdownOption.innerHTML = `${category.name}`;
       dropdownCategory.appendChild(dropdownOption);
 
       resolve();
     });
   });
-  console.log("DisplayMODALcategories liste des catégories de la modale créée");
 }
 
 //Détection des clics sur les boutons et filtrage des résultats
@@ -85,25 +73,41 @@ export function filtering() {
   console.log("fonction filtering");
   const buttonList = document.querySelectorAll(".filter button");
   const figureList = document.querySelectorAll(".gallery figure");
+  const activeFilters = new Set();
 
   buttonList.forEach((button) => {
     button.addEventListener("click", () => {
-      figureList.forEach((figure) => {
-        figure.classList.remove("hidden");
-      });
-
-      buttonList.forEach((button) =>
-        button.classList.remove("button-selected")
-      );
-
-      button.classList.add("button-selected");
-      figureList.forEach((figure) => {
-        const workCategory = figure.classList;
-        if (button.id != "0" && workCategory != button.id) {
-          figure.classList.add("hidden");
+      const filterCategory = button.id;
+      if (filterCategory === "0") {
+        activeFilters.clear();
+        buttonList.forEach((btn) => btn.classList.remove("button-selected"));
+      } else {
+        if (activeFilters.has(filterCategory)) {
+          activeFilters.delete(filterCategory);
+          button.classList.remove("button-selected");
+        } else {
+          activeFilters.add(filterCategory);
+          button.classList.add("button-selected");
         }
-      });
+      }
+      if (activeFilters.size === 0) {
+        figureList.forEach((figure) => figure.classList.remove("hidden"));
+      } else {
+        let hasVisibleFigures = false;
+        figureList.forEach((figure) => {
+          const workCategory = figure.getAttribute("category");
+
+          if (activeFilters.has(workCategory)) {
+            figure.classList.remove("hidden");
+            hasVisibleFigures = true;
+          } else {
+            figure.classList.add("hidden");
+          }
+        });
+        if (!hasVisibleFigures) {
+          figures.forEach((figure) => figure.classList.remove("hidden"));
+        }
+      }
     });
   });
-  console.log("fin fonction filtering");
 }

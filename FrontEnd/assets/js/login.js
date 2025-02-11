@@ -15,7 +15,6 @@ async function login() {
   );
 
   loginForm.addEventListener("submit", async function (event) {
-    console.log("clic bouton envoi");
     event.preventDefault();
 
     const email = document.getElementById("email").value;
@@ -25,9 +24,6 @@ async function login() {
       email,
       password,
     };
-
-    console.log("email = " + email);
-    console.log("password =" + password);
 
     const chargeUtile = JSON.stringify(loginValues);
 
@@ -52,5 +48,3 @@ async function login() {
 }
 
 login();
-// fetchCategories();
-// displayCategories(categories);

@@ -1,20 +1,11 @@
-import { displayWorks } from "./work.js";
+import { displayWorks, addWork } from "./work.js";
 import {
   displayCategories,
   createFilter,
   filtering,
   fetchCategories,
 } from "./category_filter.js";
-// import { login } from "./login.js";
-
 import {} from "./modal.js";
-
-function editMode() {
-  const banner = document.querySelector(".edit_header");
-  const editButton = document.querySelector(".edit_button");
-  banner.classList.remove("hidden");
-  editButton.classList.remove("hidden");
-}
 
 // Fonction pour récupérer les travaux de l'API
 async function fetchWorks() {
@@ -39,9 +30,17 @@ async function fetchWorks() {
 
 fetchWorks();
 
+function editMode() {
+  const banner = document.querySelector(".edit_header");
+  const editButton = document.querySelector(".edit_button");
+  banner.classList.remove("hidden");
+  editButton.classList.remove("hidden");
+}
+
 if (sessionStorage.myToken != null) {
   console.log("Main : test editmode connecté en tant qu'admin");
   editMode();
+  await addWork();
 } else {
   fetchCategories().then(filtering);
 
