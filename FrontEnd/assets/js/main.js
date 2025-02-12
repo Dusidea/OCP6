@@ -7,7 +7,6 @@ import {
 } from "./category_filter.js";
 import {} from "./modal.js";
 
-// Fonction pour récupérer les travaux de l'API
 async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -36,7 +35,7 @@ function editMode() {
 if (sessionStorage.myToken != null) {
   editMode();
   fetchWorks().then(() => {
-    //fonction de suppression **********************
+    //appel de la fonction de suppression
     const modalFigureList = document.querySelectorAll("#modal1 figure");
     modalFigureList.forEach((modalFigure) => {
       const trashIcon = modalFigure.lastChild;
@@ -45,10 +44,9 @@ if (sessionStorage.myToken != null) {
         removeWork(modalFigure);
       });
     });
-    //fin de fonction de suppression **********************
   });
 
-  //fonction d'ajout**********************
+  //appel fonction d'ajout
   const form = document.getElementById("addform");
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -62,9 +60,7 @@ if (sessionStorage.myToken != null) {
       blocPhoto.classList.remove("hidden");
     });
   });
-  //fin fonction ajout*************************
 } else {
   fetchCategories().then(filtering);
-
   createFilter();
 }

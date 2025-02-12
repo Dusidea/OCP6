@@ -1,4 +1,3 @@
-// Fonction pour afficher les données dans le HTML (limite les rechargement de type paint du DOM)
 export function displayWorks(works) {
   const mainGallery = document.querySelector(".gallery");
   mainGallery.innerHTML = "";
@@ -23,7 +22,6 @@ export function displayWorks(works) {
   modalGallery.appendChild(galleryFragment);
 }
 
-// Fonction pour créer un élément de type "figure"
 export function createFigureElement(work) {
   const figure = document.createElement("figure");
   const figureImage = document.createElement("img");
@@ -71,14 +69,10 @@ export async function removeWork(modalFigure) {
         },
       }
     );
-    const removeResponse = response.json;
-    //cacher la figure supprimée
-    //dans la modale
+
     modalFigure.classList.add("hidden");
-    //dans la main page*************
     const mainFigures = document.querySelectorAll(".gallery figure");
     const modalWorkid = modalFigure.getAttribute("workid");
-
     mainFigures.forEach((mainFigure) => {
       const mainWorkid = mainFigure.getAttribute("workid");
       if (mainWorkid == modalWorkid) {
@@ -99,7 +93,6 @@ function verifierChamp(champ) {
   }
 }
 
-//apercu de l'image dans le formulaire d'ajout
 const imageUpload = document.getElementById("addform_file");
 imageUpload.addEventListener("change", function (event) {
   const file = event.target.files[0];
@@ -113,17 +106,14 @@ imageUpload.addEventListener("change", function (event) {
   }
 });
 
-//ajout d'un nouveau projet
 export async function addWork() {
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
-
   const formData = new FormData(form);
   const image = formData.get("image");
   const titre = formData.get("title");
   const categorie = formData.get("category");
   const token = sessionStorage.getItem("myToken");
-
   if (image && titre && categorie) {
     boutonValidation.classList.remove("validate_add_button");
   }

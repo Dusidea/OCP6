@@ -21,7 +21,6 @@ export async function fetchCategories() {
   }
 }
 
-// création de l'élément filtre avec bouton all ?
 export function createFilter() {
   const filterParent = document.getElementById("portfolio");
   const filter = document.createElement("div");
@@ -34,7 +33,6 @@ export function createFilter() {
   filterParent.insertBefore(filter, gallery);
 }
 
-// récupérer les categories et créer un bouton par category
 export function displayCategories(categories) {
   categories.forEach((category) => {
     return new Promise((resolve) => {
@@ -65,7 +63,6 @@ export function displayModalCategories(categories) {
   });
 }
 
-//Détection des clics sur les boutons et filtrage des résultats
 export function filtering() {
   const buttonList = document.querySelectorAll(".filter button");
   const figureList = document.querySelectorAll(".gallery figure");
