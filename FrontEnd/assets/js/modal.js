@@ -8,7 +8,6 @@ const modalWrappers = document.querySelectorAll(".modal-wrapper");
 
 // ouverture de la modale
 const openModal = function (event) {
-  console.log("entering open modal function");
   event.preventDefault();
   const target = document.getElementById("modal1");
   target.classList.remove("hidden");
@@ -16,8 +15,10 @@ const openModal = function (event) {
   modal = target;
 
   // déclenchement fermeture au clic sur la croix
-  const closeButton = modal.querySelector(".modal_close");
-  closeButton.addEventListener("click", closeModal);
+  const closeButtons = modal.querySelectorAll(".modal_close");
+  closeButtons.forEach((closeButton) => {
+    closeButton.addEventListener("click", closeModal);
+  });
 
   // déclenchement fermeture au clic hors de la modale
   setTimeout(() => {
@@ -29,7 +30,6 @@ const openModal = function (event) {
 const closeModal = function (event) {
   if (modal === null) return;
   modal.classList.add("hidden");
-
   modal.removeEventListener("click", closeModal);
   modal = null;
 };
@@ -42,7 +42,6 @@ function closeOnOutsideClick(event) {
   if (!clickedInsideModal && !openButton.contains(event.target)) {
     event.stopPropagation();
     closeModal();
-    console.log("conditions de fermeture de la modale clic hors");
   }
 }
 
@@ -58,14 +57,12 @@ const buttonGoToAddView = document.getElementById("add_button");
 const buttonGoToRemoveView = document.querySelector(".modal_return");
 
 buttonGoToAddView.addEventListener("click", () => {
-  console.log('clic sur le bouton "ajouter" pour changer de vue');
   modalAdd.classList.remove("hidden");
   modalDelete.classList.add("hidden");
 });
 
 buttonGoToRemoveView.addEventListener("click", (event) => {
   event.preventDefault();
-  console.log("clic sur le bouton retour pour changer de vue");
   modalDelete.classList.remove("hidden");
   modalAdd.classList.add("hidden");
 });

@@ -16,8 +16,6 @@ export async function fetchCategories() {
     } else {
       displayModalCategories(categories);
     }
-
-    console.log("récupération des catégories");
   } catch (error) {
     console.error("Une erreur est survenue (catégories) :", error);
   }
@@ -34,7 +32,6 @@ export function createFilter() {
   const gallery = document.querySelector(".gallery");
   filter.appendChild(button);
   filterParent.insertBefore(filter, gallery);
-  console.log("CategoryFilter > createFilter : filtre créé");
 }
 
 // récupérer les categories et créer un bouton par category
@@ -70,7 +67,6 @@ export function displayModalCategories(categories) {
 
 //Détection des clics sur les boutons et filtrage des résultats
 export function filtering() {
-  console.log("fonction filtering");
   const buttonList = document.querySelectorAll(".filter button");
   const figureList = document.querySelectorAll(".gallery figure");
   const activeFilters = new Set();

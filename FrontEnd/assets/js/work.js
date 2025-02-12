@@ -1,7 +1,5 @@
 // Fonction pour afficher les données dans le HTML (limite les rechargement de type paint du DOM)
 export function displayWorks(works) {
-  console.log("entering displayworks");
-
   const mainGallery = document.querySelector(".gallery");
   mainGallery.innerHTML = "";
 
@@ -60,11 +58,9 @@ export function createModalFigure(work) {
 }
 
 export async function removeWork(modalFigure) {
-  console.log("XXXX entering removeWork");
   const token = sessionStorage.getItem("myToken");
 
   try {
-    console.log("XXX entering fetch remove");
     const response = await fetch(
       "http://localhost:5678/api/works/" + modalFigure.getAttribute("workid"),
       {
@@ -76,9 +72,6 @@ export async function removeWork(modalFigure) {
       }
     );
     const removeResponse = response.json;
-    console.log(
-      "remove response = " + response + " removeResponseJson " + removeResponse
-    );
     //cacher la figure supprimée
     //dans la modale
     modalFigure.classList.add("hidden");
@@ -86,13 +79,10 @@ export async function removeWork(modalFigure) {
     const mainFigures = document.querySelectorAll(".gallery figure");
     const modalWorkid = modalFigure.getAttribute("workid");
 
-    console.log("workid de la figure supprimée dans la modale " + modalWorkid);
     mainFigures.forEach((mainFigure) => {
       const mainWorkid = mainFigure.getAttribute("workid");
       if (mainWorkid == modalWorkid) {
-        console.log("XXX work.js j'ai trouvé la figure supprimée sur la main");
         mainFigure.classList.add("hidden");
-        console.log("mainFigure repérée " + mainFigure);
       }
     });
   } catch (error) {
@@ -104,30 +94,29 @@ export async function removeWork(modalFigure) {
 }
 
 function verifierChamp(champ) {
-  // Si le champ est vide, on lance une exception
   if (champ.value === "") {
     throw new Error(`Le champ ${champ.id} est vide`);
   }
 }
 
+//apercu de l'image dans le formulaire d'ajout
+const imageUpload = document.getElementById("addform_file");
+imageUpload.addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  console.log("XXXX detecting upload change");
+  if (file) {
+    const preview = document.getElementById("imagePreview");
+    preview.src = URL.createObjectURL(file);
+    preview.classList.remove("hidden");
+    const blocPhoto = document.querySelector(".modal_form_button");
+    blocPhoto.classList.add("hidden");
+  }
+});
+
 //ajout d'un nouveau projet
 export async function addWork() {
-  console.log("entering addwork");
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
-
-  //apercu de l'image
-  const imageUpload = document.getElementById("addform_file");
-  imageUpload.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-    if (file) {
-      const preview = document.getElementById("imagePreview");
-      preview.src = URL.createObjectURL(file);
-      preview.classList.remove("hidden");
-      const blocPhoto = document.querySelector(".modal_form_button");
-      blocPhoto.classList.add("hidden");
-    }
-  });
 
   const formData = new FormData(form);
   const image = formData.get("image");
@@ -137,7 +126,6 @@ export async function addWork() {
 
   if (image && titre && categorie) {
     boutonValidation.classList.remove("validate_add_button");
-    console.log("condition existance des champs vérifiée");
   }
 
   try {
@@ -153,8 +141,6 @@ export async function addWork() {
       },
       body: formData,
     });
-
-    console.log("projet ajouté");
   } catch (error) {
     console.log("Une erreur est survenue : " + error.message);
   }

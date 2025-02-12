@@ -11,15 +11,11 @@ import {} from "./modal.js";
 async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
-
     if (!response.ok) {
       throw new Error(`Erreur : ${response.status}`);
     }
-
     const works = await response.json();
     displayWorks(works);
-
-    console.log("Main: fetchworks : affichage des travaux");
   } catch (error) {
     console.error(
       "Une erreur est survenue lors de la récuparation des travaux:",
@@ -38,21 +34,15 @@ function editMode() {
 }
 
 if (sessionStorage.myToken != null) {
-  console.log("Main : test editmode connecté en tant qu'admin");
   editMode();
   fetchWorks().then(() => {
     //fonction de suppression **********************
     const modalFigureList = document.querySelectorAll("#modal1 figure");
-    const modal = document.getElementById("modal1");
-    console.log(
-      "XXXX  MAIN taille list modalfigurelist" + modalFigureList.length
-    );
     modalFigureList.forEach((modalFigure) => {
       const trashIcon = modalFigure.lastChild;
       trashIcon.addEventListener("click", () => {
-        console.log("XXXX MAIN détection clic de suppression");
+        console.log("XXX detection clic supression");
         removeWork(modalFigure);
-        // modal.classList.add("hidden");
       });
     });
     //fin de fonction de suppression **********************
@@ -63,9 +53,13 @@ if (sessionStorage.myToken != null) {
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
     await addWork().then(() => {
-      console.log("Nouvelle figure ajoutée, appel de fetchworks()");
       fetchWorks();
       form.reset();
+      console.log("XXXX  form reset");
+      const preview = document.getElementById("imagePreview");
+      preview.classList.add("hidden");
+      const blocPhoto = document.querySelector(".modal_form_button");
+      blocPhoto.classList.remove("hidden");
     });
   });
   //fin fonction ajout*************************
@@ -73,5 +67,4 @@ if (sessionStorage.myToken != null) {
   fetchCategories().then(filtering);
 
   createFilter();
-  console.log("Main : test editmode NON connecté en tant qu'admin");
 }
