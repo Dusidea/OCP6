@@ -28,18 +28,13 @@ export function displayWorks(works) {
 // Fonction pour créer un élément de type "figure"
 export function createFigureElement(work) {
   const figure = document.createElement("figure");
-
   const figureImage = document.createElement("img");
   figureImage.setAttribute("src", work.imageUrl);
   figureImage.setAttribute("alt", work.title);
-
   const figureTitle = document.createElement("figcaption");
   figureTitle.textContent = work.title;
-
   const category = work.category.id;
-
   figure.setAttribute("category", category);
-
   figure.appendChild(figureImage);
   figure.appendChild(figureTitle);
   figure.setAttribute("workid", work.id);
@@ -60,78 +55,53 @@ export function createModalFigure(work) {
   removeIcon.classList.add("remove_button");
   const trashCan = `<i class="fa-solid fa-trash-can"></i>`;
   removeIcon.innerHTML = trashCan;
-
   modalFigure.appendChild(removeIcon);
-  // const token = sessionStorage.getItem("myToken");
-
-  // removeIcon.addEventListener("click", removeWork);
-  // removeIcon.addEventListener("click", () => {
-  //   console.log(
-  //     "trying to remove work id : " + modalFigure.getAttribute("workid")
-  //   );
-
-  //   try {
-  //     const removeResponse = fetch(
-  //       "/http://localhost:5678/api/works/" +
-  //         modalFigure.getAttribute("workid"),
-
-  //       {
-  //         method: "DELETE",
-  //         headers: {
-  //           Accept: "*/*",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (!removeResponse.ok) {
-  //       throw new Error(`Erreur : ${removeResponse.status}`);
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Une erreur est survenue lors de la tentative de suppression du travail ",
-  //       error
-  //     );
-  //     if (removeResponse == 200) {
-  //       modalFigure.classList.add("hidden");
-  //     }
-  //   }
-  // });
-
-  //---------------------------
-  console.log("modalFigureImage " + modalFigureImage);
   return modalFigure;
 }
 
-// async function removeWork() {
-//   const modalFigureList = document.querySelectorAll("aside figure");
-//   console.log("modal Figure List " + modalFigureList);
+export async function removeWork(modalFigure) {
+  console.log("XXXX entering removeWork");
+  const token = sessionStorage.getItem("myToken");
 
-//   modalFigureList.forEach((modalFigure) => {
-//     console.log("remove work boucle parcourant les figures");
-//     const trashIcon = modalFigure.lastChild;
-//     console.log("boutons " + trashIcon);
-//     trashIcon.addEventListener("click", () => {
-//       // try {
-//       //   const removeResponse = fetch(
-//       //     "http://localhost:5678/api/works/" +
-//       //       modalFigure.getAttribute("workid")
-//       //   );
-//       //   if (!removeResponse.ok) {
-//       //     throw new Error(`Erreur : ${removeResponse.status}`);
-//       //   }
-//       // } catch (error) {
-//       //   console.error(
-//       //     "Une erreur est survenue lors de la tentative de suppression du travail ",
-//       //     error
-//       //   );
-//       // }
-//       console.log("trying to remove work");
-//     });
-//   });
-// }
+  try {
+    console.log("XXX entering fetch remove");
+    const response = await fetch(
+      "http://localhost:5678/api/works/" + modalFigure.getAttribute("workid"),
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const removeResponse = response.json;
+    console.log(
+      "remove response = " + response + " removeResponseJson " + removeResponse
+    );
+    //cacher la figure supprimée
+    //dans la modale
+    modalFigure.classList.add("hidden");
+    //dans la main page*************
+    const mainFigures = document.querySelectorAll(".gallery figure");
+    const modalWorkid = modalFigure.getAttribute("workid");
 
-// removeWork();
+    console.log("workid de la figure supprimée dans la modale " + modalWorkid);
+    mainFigures.forEach((mainFigure) => {
+      const mainWorkid = mainFigure.getAttribute("workid");
+      if (mainWorkid == modalWorkid) {
+        console.log("XXX work.js j'ai trouvé la figure supprimée sur la main");
+        mainFigure.classList.add("hidden");
+        console.log("mainFigure repérée " + mainFigure);
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Une erreur est survenue lors de la tentative de suppression du travail ",
+      error
+    );
+  }
+}
 
 function verifierChamp(champ) {
   // Si le champ est vide, on lance une exception
@@ -142,6 +112,7 @@ function verifierChamp(champ) {
 
 //ajout d'un nouveau projet
 export async function addWork() {
+  console.log("entering addwork");
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
 
@@ -158,73 +129,33 @@ export async function addWork() {
     }
   });
 
-  form.addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const formData = new FormData(form);
+  const formData = new FormData(form);
+  const image = formData.get("image");
+  const titre = formData.get("title");
+  const categorie = formData.get("category");
+  const token = sessionStorage.getItem("myToken");
 
-    const image = formData.get("image");
+  if (image && titre && categorie) {
+    boutonValidation.classList.remove("validate_add_button");
+    console.log("condition existance des champs vérifiée");
+  }
 
-    const titre = formData.get("title");
-    const categorie = formData.get("category");
+  try {
+    verifierChamp(image);
+    verifierChamp(titre);
+    verifierChamp(categorie);
 
-    const token = sessionStorage.getItem("myToken");
-    if (image && titre && categorie) {
-      boutonValidation.classList.remove("validate_add_button");
-      console.log("condition existance des champs vérifiée");
-    }
-    try {
-      verifierChamp(image);
-      verifierChamp(titre);
-      verifierChamp(categorie);
+    return await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
-      return await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      console.log("projet ajouté");
-
-      //DEBUT création manuelle de la nouvelle figure (KO)
-      // const figure = document.createElement("figure");
-      // const figureImage = document.createElement("img");
-      // const imageUrl = "http://localhost:5678/images/" + image.name;
-      // console.log("image url " + imageUrl);
-      // figureImage.setAttribute("src", imageUrl);
-      // figureImage.setAttribute("alt", titre);
-      // const figureTitle = document.createElement("figcaption");
-      // figureTitle.textContent = titre;
-
-      // figure.setAttribute("category", categorie);
-      // figure.appendChild(figureImage);
-      // figure.appendChild(figureTitle);
-      // const mainGallery = document.querySelector(".gallery");
-      // mainGallery.appendChild(figure);
-
-      //FIN création manuelle de la nouvelle figure (KO)
-    } catch (error) {
-      console.log("Une erreur est survenue : " + error.message);
-    }
-  });
+    console.log("projet ajouté");
+  } catch (error) {
+    console.log("Une erreur est survenue : " + error.message);
+  }
 }
-
-// export function NewDisplayWorks() {
-//   const mainGallery = document.querySelector(".gallery");
-
-//   const modalGallery = document.querySelector(".modal-wrapper_gallery");
-
-//   const fragment = document.createDocumentFragment();
-//   const galleryFragment = document.createDocumentFragment();
-
-//   const figure = createFigureElement(newWork);
-//   fragment.appendChild(figure);
-
-//   const modalFigure = createModalFigure(newWork);
-//   galleryFragment.appendChild(modalFigure);
-
-//   mainGallery.appendChild(fragment);
-//   modalGallery.appendChild(galleryFragment);
-// }

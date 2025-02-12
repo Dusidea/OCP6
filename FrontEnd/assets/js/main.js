@@ -1,4 +1,4 @@
-import { displayWorks, addWork } from "./work.js";
+import { displayWorks, addWork, removeWork } from "./work.js";
 import {
   displayCategories,
   createFilter,
@@ -40,7 +40,35 @@ function editMode() {
 if (sessionStorage.myToken != null) {
   console.log("Main : test editmode connecté en tant qu'admin");
   editMode();
-  await addWork();
+  fetchWorks().then(() => {
+    //fonction de suppression **********************
+    const modalFigureList = document.querySelectorAll("#modal1 figure");
+    const modal = document.getElementById("modal1");
+    console.log(
+      "XXXX  MAIN taille list modalfigurelist" + modalFigureList.length
+    );
+    modalFigureList.forEach((modalFigure) => {
+      const trashIcon = modalFigure.lastChild;
+      trashIcon.addEventListener("click", () => {
+        console.log("XXXX MAIN détection clic de suppression");
+        removeWork(modalFigure);
+        // modal.classList.add("hidden");
+      });
+    });
+    //fin de fonction de suppression **********************
+  });
+
+  //fonction d'ajout**********************
+  const form = document.getElementById("addform");
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    await addWork().then(() => {
+      console.log("Nouvelle figure ajoutée, appel de fetchworks()");
+      fetchWorks();
+      form.reset();
+    });
+  });
+  //fin fonction ajout*************************
 } else {
   fetchCategories().then(filtering);
 
