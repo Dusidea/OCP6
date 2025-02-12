@@ -145,11 +145,25 @@ export async function addWork() {
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
 
+  //apercu de l'image
+  const imageUpload = document.getElementById("addform_file");
+  imageUpload.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const preview = document.getElementById("imagePreview");
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+      const blocPhoto = document.querySelector(".modal_form_button");
+      blocPhoto.classList.add("hidden");
+    }
+  });
+
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
     const formData = new FormData(form);
 
     const image = formData.get("image");
+
     const titre = formData.get("title");
     const categorie = formData.get("category");
 
@@ -163,7 +177,7 @@ export async function addWork() {
       verifierChamp(titre);
       verifierChamp(categorie);
 
-      const addWorkResponse = await fetch("http://localhost:5678/api/works", {
+      return await fetch("http://localhost:5678/api/works", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -171,10 +185,46 @@ export async function addWork() {
         },
         body: formData,
       });
-      const result = await addWorkResponse.json();
+
       console.log("projet ajouté");
+
+      //DEBUT création manuelle de la nouvelle figure (KO)
+      // const figure = document.createElement("figure");
+      // const figureImage = document.createElement("img");
+      // const imageUrl = "http://localhost:5678/images/" + image.name;
+      // console.log("image url " + imageUrl);
+      // figureImage.setAttribute("src", imageUrl);
+      // figureImage.setAttribute("alt", titre);
+      // const figureTitle = document.createElement("figcaption");
+      // figureTitle.textContent = titre;
+
+      // figure.setAttribute("category", categorie);
+      // figure.appendChild(figureImage);
+      // figure.appendChild(figureTitle);
+      // const mainGallery = document.querySelector(".gallery");
+      // mainGallery.appendChild(figure);
+
+      //FIN création manuelle de la nouvelle figure (KO)
     } catch (error) {
       console.log("Une erreur est survenue : " + error.message);
     }
   });
 }
+
+// export function NewDisplayWorks() {
+//   const mainGallery = document.querySelector(".gallery");
+
+//   const modalGallery = document.querySelector(".modal-wrapper_gallery");
+
+//   const fragment = document.createDocumentFragment();
+//   const galleryFragment = document.createDocumentFragment();
+
+//   const figure = createFigureElement(newWork);
+//   fragment.appendChild(figure);
+
+//   const modalFigure = createModalFigure(newWork);
+//   galleryFragment.appendChild(modalFigure);
+
+//   mainGallery.appendChild(fragment);
+//   modalGallery.appendChild(galleryFragment);
+// }

@@ -95,6 +95,12 @@
 
             <form class="modal_form" id="addform" action="#" method="post">
               <label for="addform_file" class="modal_form_photo">
+                <img
+                  id="imagePreview"
+                  src=""
+                  alt="Aperçu de l'image"
+                  class="hidden preview_image"
+                />
                 <i class="fa-regular fa-image modal_form_photo_icon"></i>
                 <p class="modal_form_button">+ Ajouter photo</p>
                 <p class="modal_form_text">jpg, png : 4mo max</p>
@@ -106,12 +112,10 @@
                 accept=".jpg,.png"
                 class="hidden"
               />
-
               <label for="addform_titre">Titre</label>
               <input type="text" name="title" id="addform_titre" autofocus />
               <label for="addform_categorie">Catégorie</label>
               <select name="category" id="addform_categorie"></select>
-
               <label for="validate_add_button"> <hr /></label>
               <input
                 type="submit"
