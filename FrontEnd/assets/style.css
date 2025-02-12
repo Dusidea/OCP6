@@ -210,13 +210,11 @@ li:hover {
   margin-bottom: 1em;
 }
 
-/* rajouté pour gérer le placement du filtre */
 .filter {
   text-align: center;
   margin-bottom: 50px;
 }
 
-/* J'ai rajouté cette classe pour gérer le style des boutons, à noter c'est une copie de input type submit */
 button {
   font-family: "Syne";
   font-weight: 700;
@@ -381,7 +379,6 @@ footer nav ul {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   background-color: white;
   border-radius: 10px;
@@ -397,12 +394,10 @@ footer nav ul {
   grid-auto-rows: minmax(76px, auto);
   width: fit-content;
   block-size: fit-content;
-  /* margin-top: 20px; */
   margin-bottom: 20px;
 }
 
 .modal-wrapper_gallery img {
-  /* display: grid; */
   width: 76px;
   block-size: fit-content;
 }
@@ -415,8 +410,6 @@ footer nav ul {
   font-size: 26px;
   font-weight: 400;
   padding: 23px;
-  /* margin-top: 37px;
-  margin-bottom: 15px; */
 }
 
 .modal_close {
@@ -487,8 +480,6 @@ hr {
 .modal_form {
   display: flex;
   flex-direction: column;
-  /* width: 630px;
-  height: 670px; */
   font-size: 14px;
   font-weight: 500;
   gap: 10px;
@@ -499,10 +490,25 @@ hr {
   width: 100%;
   box-shadow: 0px 4px 14px 0px #00000017;
   border: 0;
-  height: 51px;
-  padding: 10px;
+  padding: 20px;
   font-family: Work Sans;
   font-weight: 400;
+}
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-chevron {
+  position: absolute;
+  top: 460px;
+  right: 120px;
+  font-size: 11px;
 }
 
 .modal_form #addform_file {
@@ -580,6 +586,4 @@ input.validate_add_button {
   max-width: 150px;
   max-height: 169px;
   position: absolute;
-  /* left: 250px;
-  top: 110px; */
 }
