@@ -1,7 +1,3 @@
-// import { fetchCategories, displayCategories } from "./category_filter.js";
-
-// import {} from "./modal.js";
-
 function redirect() {
   let url = "./index.html";
   location.href = url;
@@ -9,10 +5,6 @@ function redirect() {
 
 async function login() {
   const loginForm = document.getElementById("loginform");
-  // const loginForm = document.querySelector(".loginformclass");
-  console.log(
-    "tentative de récupérer le formulaire de login id loginform " + loginForm
-  );
 
   loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -40,7 +32,6 @@ async function login() {
       const token = data.token;
       //local storage : F12, application, local storage.
       sessionStorage.setItem("myToken", token);
-      console.log("token = " + token);
 
       redirect();
     }

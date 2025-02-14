@@ -40,7 +40,6 @@ if (sessionStorage.myToken != null) {
     modalFigureList.forEach((modalFigure) => {
       const trashIcon = modalFigure.lastChild;
       trashIcon.addEventListener("click", () => {
-        console.log("XXX detection clic supression");
         removeWork(modalFigure);
       });
     });
@@ -53,7 +52,6 @@ if (sessionStorage.myToken != null) {
     await addWork().then(() => {
       fetchWorks();
       form.reset();
-      console.log("XXXX  form reset");
       const preview = document.getElementById("imagePreview");
       preview.classList.add("hidden");
       const blocPhoto = document.querySelector(".modal_form_button");

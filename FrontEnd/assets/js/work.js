@@ -96,7 +96,6 @@ function verifierChamp(champ) {
 const imageUpload = document.getElementById("addform_file");
 imageUpload.addEventListener("change", function (event) {
   const file = event.target.files[0];
-  console.log("XXXX detecting upload change");
   if (file) {
     const preview = document.getElementById("imagePreview");
     preview.src = URL.createObjectURL(file);
