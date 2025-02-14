@@ -58,6 +58,8 @@ if (sessionStorage.myToken != null) {
       preview.classList.add("hidden");
       const blocPhoto = document.querySelector(".modal_form_button");
       blocPhoto.classList.remove("hidden");
+      const modal = document.getElementById("modal1");
+      modal.classList.add("hidden");
     });
   });
 } else {

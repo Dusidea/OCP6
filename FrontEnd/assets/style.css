@@ -179,6 +179,7 @@ nav li {
   font-size: 1.2em;
 }
 
+a:hover,
 li:hover {
   color: #b1663c;
 }
@@ -586,4 +587,9 @@ input.validate_add_button {
   max-width: 150px;
   max-height: 169px;
   position: absolute;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
