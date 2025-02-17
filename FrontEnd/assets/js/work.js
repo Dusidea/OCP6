@@ -20,6 +20,21 @@ export function displayWorks(works) {
 
   mainGallery.appendChild(fragment);
   modalGallery.appendChild(galleryFragment);
+
+  const modalFigureList = document.querySelectorAll("#modal1 figure");
+  console.log(
+    "XXXX dans displayworks modalFigure list taille " + modalFigureList.length
+  );
+  modalFigureList.forEach((modalFigure) => {
+    const trashIcon = modalFigure.lastChild;
+    console.log(
+      "XXXXX displayworks parcourt list figures trashICON = " + trashIcon
+    );
+    trashIcon.addEventListener("click", () => {
+      console.log("XXXXXX detection clic suppression");
+      removeWork(modalFigure);
+    });
+  });
 }
 
 export function createFigureElement(work) {
@@ -57,6 +72,7 @@ export function createModalFigure(work) {
 
 export async function removeWork(modalFigure) {
   const token = sessionStorage.getItem("myToken");
+  console.log("XXXXX entering removeWork");
 
   try {
     const response = await fetch(
@@ -132,5 +148,22 @@ export async function addWork() {
     });
   } catch (error) {
     console.log("Une erreur est survenue : " + error.message);
+  }
+}
+
+export async function fetchWorks() {
+  console.log("XXXXXX entering fetchworks");
+  try {
+    const response = await fetch("http://localhost:5678/api/works");
+    if (!response.ok) {
+      throw new Error(`Erreur : ${response.status}`);
+    }
+    const works = await response.json();
+    displayWorks(works);
+  } catch (error) {
+    console.error(
+      "Une erreur est survenue lors de la récuparation des travaux:",
+      error
+    );
   }
 }
