@@ -90,12 +90,6 @@ export async function removeWork(modalFigure) {
   }
 }
 
-function verifierChamp(champ) {
-  if (champ.value === "") {
-    throw new Error(`Le champ ${champ.id} est vide`);
-  }
-}
-
 const imageUpload = document.getElementById("addform_file");
 imageUpload.addEventListener("change", function (event) {
   const file = event.target.files[0];
@@ -108,6 +102,20 @@ imageUpload.addEventListener("change", function (event) {
   }
 });
 
+function verifierChamp(champ) {
+  const form = document.getElementById("addform");
+  const boutonValidation = document.getElementById("validate_add_button");
+  const champs = form.querySelectorAll("input", "select");
+  console.log("XXXX entering verifierchamp");
+  champs.forEach((champ) => {
+    console.log("XXXX champ.value = " + champ.value);
+    if (champ.value === "") {
+      console.log("XXX champ indéfini");
+      throw new Error(`Le champ ${champ.id} est vide`);
+    }
+  });
+}
+
 export async function addWork() {
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
@@ -119,13 +127,14 @@ export async function addWork() {
   if (image && titre && categorie) {
     boutonValidation.classList.remove("validate_add_button");
   }
-
   try {
     verifierChamp(image);
     verifierChamp(titre);
     verifierChamp(categorie);
+    const modal = document.getElementById("modal1");
+    modal.classList.add("hidden");
 
-    return await fetch("http://localhost:5678/api/works", {
+    const addResponse = await fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -133,6 +142,7 @@ export async function addWork() {
       },
       body: formData,
     });
+    return addResponse;
   } catch (error) {
     console.log("Une erreur est survenue : " + error.message);
   }
