@@ -1,10 +1,8 @@
 export function displayWorks(works) {
   const mainGallery = document.querySelector(".gallery");
   mainGallery.innerHTML = "";
-
   const modalGallery = document.querySelector(".modal-wrapper_gallery");
   modalGallery.innerHTML = "";
-
   const fragment = document.createDocumentFragment();
   const galleryFragment = document.createDocumentFragment();
 
@@ -12,7 +10,6 @@ export function displayWorks(works) {
     if (work.imageUrl && work.title) {
       const figure = createFigureElement(work);
       fragment.appendChild(figure);
-
       const modalFigure = createModalFigure(work);
       galleryFragment.appendChild(modalFigure);
     }
@@ -20,18 +17,10 @@ export function displayWorks(works) {
 
   mainGallery.appendChild(fragment);
   modalGallery.appendChild(galleryFragment);
-
   const modalFigureList = document.querySelectorAll("#modal1 figure");
-  console.log(
-    "XXXX dans displayworks modalFigure list taille " + modalFigureList.length
-  );
   modalFigureList.forEach((modalFigure) => {
     const trashIcon = modalFigure.lastChild;
-    console.log(
-      "XXXXX displayworks parcourt list figures trashICON = " + trashIcon
-    );
     trashIcon.addEventListener("click", () => {
-      console.log("XXXXXX detection clic suppression");
       removeWork(modalFigure);
     });
   });
@@ -55,7 +44,6 @@ export function createFigureElement(work) {
 
 export function createModalFigure(work) {
   const modalFigure = document.createElement("figure");
-
   const modalFigureImage = document.createElement("img");
   modalFigureImage.setAttribute("src", work.imageUrl);
   modalFigureImage.setAttribute("alt", work.title);
@@ -72,7 +60,6 @@ export function createModalFigure(work) {
 
 export async function removeWork(modalFigure) {
   const token = sessionStorage.getItem("myToken");
-  console.log("XXXXX entering removeWork");
 
   try {
     const response = await fetch(
@@ -152,7 +139,6 @@ export async function addWork() {
 }
 
 export async function fetchWorks() {
-  console.log("XXXXXX entering fetchworks");
   try {
     const response = await fetch("http://localhost:5678/api/works");
     if (!response.ok) {

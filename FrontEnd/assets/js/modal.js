@@ -8,7 +8,6 @@ const openModal = function (event) {
   const target = document.getElementById("modal1");
   target.classList.remove("hidden");
   modal = target;
-
   const closeButtons = modal.querySelectorAll(".modal_close");
   closeButtons.forEach((closeButton) => {
     closeButton.addEventListener("click", closeModal);
@@ -37,7 +36,6 @@ function closeOnOutsideClick(event) {
 
 const openButton = document.querySelector(".edit_button");
 openButton.addEventListener("click", openModal);
-
 const modalDelete = document.getElementById("modal_delete");
 const modalAdd = document.getElementById("modal_add");
 const buttonGoToAddView = document.getElementById("add_button");

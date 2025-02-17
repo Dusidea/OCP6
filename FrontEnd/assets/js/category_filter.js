@@ -39,7 +39,6 @@ export function displayCategories(categories) {
       const button = document.createElement("button");
       button.innerHTML = `${category.name}`;
       button.setAttribute("id", category.id);
-
       const filter = document.querySelector(".filter");
       filter.appendChild(button);
 
@@ -53,7 +52,6 @@ export function displayModalCategories(categories) {
     return new Promise((resolve) => {
       const dropdownCategory = document.getElementById("addform_categorie");
       const dropdownOption = document.createElement("option");
-
       dropdownOption.setAttribute("value", category.id);
       dropdownOption.innerHTML = `${category.name}`;
       dropdownCategory.appendChild(dropdownOption);
@@ -67,7 +65,6 @@ export function filtering() {
   const buttonList = document.querySelectorAll(".filter button");
   const figureList = document.querySelectorAll(".gallery figure");
   const activeFilters = new Set();
-
   buttonList.forEach((button) => {
     button.addEventListener("click", () => {
       const filterCategory = button.id;
@@ -89,7 +86,6 @@ export function filtering() {
         let hasVisibleFigures = false;
         figureList.forEach((figure) => {
           const workCategory = figure.getAttribute("category");
-
           if (activeFilters.has(workCategory)) {
             figure.classList.remove("hidden");
             hasVisibleFigures = true;
