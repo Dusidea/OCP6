@@ -106,11 +106,8 @@ function verifierChamp(champ) {
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
   const champs = form.querySelectorAll("input", "select");
-  console.log("XXXX entering verifierchamp");
   champs.forEach((champ) => {
-    console.log("XXXX champ.value = " + champ.value);
     if (champ.value === "") {
-      console.log("XXX champ indéfini");
       throw new Error(`Le champ ${champ.id} est vide`);
     }
   });
