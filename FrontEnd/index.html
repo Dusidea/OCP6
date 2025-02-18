@@ -102,7 +102,9 @@
                   class="hidden preview_image"
                 />
                 <i class="fa-regular fa-image modal_form_photo_icon"></i>
-                <p class="modal_form_button">+ Ajouter photo</p>
+                <p class="modal_form_button" id="photo_button">
+                  + Ajouter photo
+                </p>
                 <p class="modal_form_text">jpg, png : 4mo max</p>
               </label>
               <input
@@ -116,7 +118,15 @@
               <input type="text" name="title" id="addform_titre" autofocus />
               <label for="addform_categorie">Catégorie</label>
               <select name="category" id="addform_categorie"></select>
-              <p class="hidden form_error"></p>
+              <p class="hidden form_error" id="add_form_error"></p>
+              <p class="hidden form_error" id="add_form_error_image_size">
+                Le fichier est trop volumineux, veuillez sélectionner une image
+                de taille inférieure à 4 Mo.
+              </p>
+              <p class="hidden form_error" id="add_form_error_image_type">
+                Le fichier n'est pas au bon format. Veuillez choisir une image
+                de type .png ou .jpg.
+              </p>
               <label for="validate_add_button"> <hr /></label>
               <input
                 type="submit"

@@ -111,8 +111,15 @@ imageUpload.addEventListener("change", function (event) {
 function verifierChamp(champ) {
   const form = document.getElementById("addform");
   const champs = form.querySelectorAll("input", "select");
-  const message = document.querySelector(".form_error");
+  const message = document.getElementById("add_form_error");
+  const message_image_size = document.getElementById(
+    "add_form_error_image_size"
+  );
+  const message_image_type = document.getElementById(
+    "add_form_error_image_type"
+  );
   let alias = "";
+  const accepted_formats = ["image/png", "image/jpeg"];
 
   champs.forEach((champ) => {
     if (champ.value === "") {
@@ -128,11 +135,31 @@ function verifierChamp(champ) {
       }
       message.classList.remove("hidden");
       message.innerHTML = `Erreur, le champ ${alias} n'est pas rempli correctement`;
-      // message.innerHTML = `Erreur, le champ ${champ.name} n'est pas rempli correctement`;
       throw new Error(`Le champ ${champ.id} est vide`);
+    } else if (champ.name === "image") {
+      if (champ.files.item(0).size > 4194304) {
+        message_image_size.classList.remove("hidden");
+        throw new Error(`Le champ fichier est trop volumineux`);
+      }
+      if (!accepted_formats.includes(champ.files.item(0).type)) {
+        message_image_type.classList.remove("hidden");
+        throw new Error(`Le champ fichier n'est pas au bon format`);
+      }
     }
   });
 }
+
+//reset add_form error messages
+const message = document.getElementById("add_form_error");
+const message_image_size = document.getElementById("add_form_error_image_size");
+const message_image_type = document.getElementById("add_form_error_image_type");
+const add_photo_button = document.getElementById("photo_button");
+add_photo_button.addEventListener("click", () => {
+  console.log("click photo hide message");
+  message.classList.add("hidden");
+  message_image_size.classList.add("hidden");
+  message_image_type.classList.add("hidden");
+});
 
 //Allowing users to add a new media in the gallery
 export async function addWork() {
