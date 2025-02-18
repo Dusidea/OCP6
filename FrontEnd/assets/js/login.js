@@ -1,8 +1,3 @@
-function redirect() {
-  let url = "./index.html";
-  location.href = url;
-}
-
 async function login() {
   const loginForm = document.getElementById("loginform");
   loginForm.addEventListener("submit", async function (event) {
@@ -21,14 +16,11 @@ async function login() {
     });
     if (email != "sophie.bluel@test.tld" || password != "S0phie") {
       document.getElementById("logerror").classList.remove("hidden");
-      console.log("pb identifiant");
     } else {
       const data = await authResponse.json();
       const token = data.token;
-      //local storage : F12, application, local storage.
       sessionStorage.setItem("myToken", token);
-
-      redirect();
+      window.location = "./index.html";
     }
   });
 }

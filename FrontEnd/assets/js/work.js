@@ -1,3 +1,4 @@
+//Displaying fetched works
 export function displayWorks(works) {
   const mainGallery = document.querySelector(".gallery");
   mainGallery.innerHTML = "";
@@ -26,6 +27,7 @@ export function displayWorks(works) {
   });
 }
 
+// Main page gallery: creating html elements for each work
 export function createFigureElement(work) {
   const figure = document.createElement("figure");
   const figureImage = document.createElement("img");
@@ -42,6 +44,7 @@ export function createFigureElement(work) {
   return figure;
 }
 
+// Modal page gallery: creating html elements for each work
 export function createModalFigure(work) {
   const modalFigure = document.createElement("figure");
   const modalFigureImage = document.createElement("img");
@@ -58,6 +61,7 @@ export function createModalFigure(work) {
   return modalFigure;
 }
 
+//Allowing users to remove a work from the list
 export async function removeWork(modalFigure) {
   const token = sessionStorage.getItem("myToken");
 
@@ -90,6 +94,7 @@ export async function removeWork(modalFigure) {
   }
 }
 
+//creating a preview for uploaded images
 const imageUpload = document.getElementById("addform_file");
 imageUpload.addEventListener("change", function (event) {
   const file = event.target.files[0];
@@ -102,17 +107,34 @@ imageUpload.addEventListener("change", function (event) {
   }
 });
 
+//checking if addwork form fields are empty
 function verifierChamp(champ) {
   const form = document.getElementById("addform");
-  const boutonValidation = document.getElementById("validate_add_button");
   const champs = form.querySelectorAll("input", "select");
+  const message = document.querySelector(".form_error");
+  let alias = "";
+
   champs.forEach((champ) => {
     if (champ.value === "") {
+      switch (champ.name) {
+        case "title":
+          alias = "Titre";
+          break;
+        case "category":
+          alias = "Catégorie";
+          break;
+        default:
+          alias = champ.name;
+      }
+      message.classList.remove("hidden");
+      message.innerHTML = `Erreur, le champ ${alias} n'est pas rempli correctement`;
+      // message.innerHTML = `Erreur, le champ ${champ.name} n'est pas rempli correctement`;
       throw new Error(`Le champ ${champ.id} est vide`);
     }
   });
 }
 
+//Allowing users to add a new media in the gallery
 export async function addWork() {
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
@@ -121,9 +143,11 @@ export async function addWork() {
   const titre = formData.get("title");
   const categorie = formData.get("category");
   const token = sessionStorage.getItem("myToken");
+
   if (image && titre && categorie) {
     boutonValidation.classList.remove("validate_add_button");
   }
+
   try {
     verifierChamp(image);
     verifierChamp(titre);
@@ -145,6 +169,7 @@ export async function addWork() {
   }
 }
 
+//fetching the work list from the database
 export async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
