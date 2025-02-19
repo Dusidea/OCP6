@@ -1,3 +1,4 @@
+//Displaying fetched works
 export function displayWorks(works) {
   const mainGallery = document.querySelector(".gallery");
   mainGallery.innerHTML = "";
@@ -26,6 +27,7 @@ export function displayWorks(works) {
   });
 }
 
+// Main page gallery: creating html elements for each work
 export function createFigureElement(work) {
   const figure = document.createElement("figure");
   const figureImage = document.createElement("img");
@@ -42,6 +44,7 @@ export function createFigureElement(work) {
   return figure;
 }
 
+// Modal page gallery: creating html elements for each work
 export function createModalFigure(work) {
   const modalFigure = document.createElement("figure");
   const modalFigureImage = document.createElement("img");
@@ -58,6 +61,7 @@ export function createModalFigure(work) {
   return modalFigure;
 }
 
+//Allowing users to remove a work from the list
 export async function removeWork(modalFigure) {
   const token = sessionStorage.getItem("myToken");
 
@@ -90,6 +94,7 @@ export async function removeWork(modalFigure) {
   }
 }
 
+//creating a preview for uploaded images
 const imageUpload = document.getElementById("addform_file");
 imageUpload.addEventListener("change", function (event) {
   const file = event.target.files[0];
@@ -102,17 +107,76 @@ imageUpload.addEventListener("change", function (event) {
   }
 });
 
+//checking if addwork form fields are empty
 function verifierChamp(champ) {
   const form = document.getElementById("addform");
-  const boutonValidation = document.getElementById("validate_add_button");
   const champs = form.querySelectorAll("input", "select");
+  const message = document.getElementById("add_form_error");
+  const message_image_size = document.getElementById(
+    "add_form_error_image_size"
+  );
+  const message_image_type = document.getElementById(
+    "add_form_error_image_type"
+  );
+  let alias = "";
+  const accepted_formats = ["image/png", "image/jpeg"];
+
   champs.forEach((champ) => {
     if (champ.value === "") {
+      switch (champ.name) {
+        case "title":
+          alias = "Titre";
+          break;
+        case "category":
+          alias = "Catégorie";
+          break;
+        default:
+          alias = champ.name;
+      }
+      message.classList.remove("hidden");
+      message.innerHTML = `Erreur, le champ ${alias} n'est pas rempli correctement`;
       throw new Error(`Le champ ${champ.id} est vide`);
+    } else if (champ.name === "image") {
+      if (champ.files.item(0).size > 4194304) {
+        message_image_size.classList.remove("hidden");
+        throw new Error(`Le champ fichier est trop volumineux`);
+      }
+      if (!accepted_formats.includes(champ.files.item(0).type)) {
+        message_image_type.classList.remove("hidden");
+        throw new Error(`Le champ fichier n'est pas au bon format`);
+      }
     }
   });
 }
 
+//addWork form resets : resetting form values, image preview and error messages
+function resetForm() {
+  //closing modal after successful data gathering
+  const modal = document.getElementById("modal1");
+  modal.classList.add("hidden");
+
+  //reseting form values and image preview
+  const form = document.getElementById("addform");
+  form.reset();
+  const blocPhoto = document.querySelector(".modal_form_button");
+  blocPhoto.classList.remove("hidden");
+  const preview = document.getElementById("imagePreview");
+  preview.classList.add("hidden");
+
+  //reset add_form error messages
+  const message = document.getElementById("add_form_error");
+  const message_image_size = document.getElementById(
+    "add_form_error_image_size"
+  );
+  const message_image_type = document.getElementById(
+    "add_form_error_image_type"
+  );
+  message.classList.add("hidden");
+  message_image_size.classList.add("hidden");
+  message_image_type.classList.add("hidden");
+}
+
+//Allowing users to add a new media in the gallery
 export async function addWork() {
   const form = document.getElementById("addform");
   const boutonValidation = document.getElementById("validate_add_button");
@@ -121,15 +185,16 @@ export async function addWork() {
   const titre = formData.get("title");
   const categorie = formData.get("category");
   const token = sessionStorage.getItem("myToken");
+
   if (image && titre && categorie) {
     boutonValidation.classList.remove("validate_add_button");
   }
+
   try {
     verifierChamp(image);
     verifierChamp(titre);
     verifierChamp(categorie);
-    const modal = document.getElementById("modal1");
-    modal.classList.add("hidden");
+    resetForm();
 
     const addResponse = await fetch("http://localhost:5678/api/works", {
       method: "POST",
@@ -139,12 +204,14 @@ export async function addWork() {
       },
       body: formData,
     });
+
     return addResponse;
   } catch (error) {
     console.log("Une erreur est survenue : " + error.message);
   }
 }
 
+//fetching the work list from the database
 export async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");

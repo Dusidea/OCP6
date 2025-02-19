@@ -36,6 +36,7 @@ function closeOnOutsideClick(event) {
 
 const openButton = document.querySelector(".edit_button");
 openButton.addEventListener("click", openModal);
+
 const modalDelete = document.getElementById("modal_delete");
 const modalAdd = document.getElementById("modal_add");
 const buttonGoToAddView = document.getElementById("add_button");

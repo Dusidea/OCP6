@@ -1,3 +1,4 @@
+//getting the list of categories from the database
 export async function fetchCategories() {
   try {
     const catResponse = await fetch("http://localhost:5678/api/categories");
@@ -21,6 +22,7 @@ export async function fetchCategories() {
   }
 }
 
+//creating the filter object
 export function createFilter() {
   const filterParent = document.getElementById("portfolio");
   const filter = document.createElement("div");
@@ -33,6 +35,7 @@ export function createFilter() {
   filterParent.insertBefore(filter, gallery);
 }
 
+//creating the filter buttons => one per category
 export function displayCategories(categories) {
   categories.forEach((category) => {
     return new Promise((resolve) => {
@@ -47,6 +50,7 @@ export function displayCategories(categories) {
   });
 }
 
+//creating the dropdown menu for the select category field
 export function displayModalCategories(categories) {
   categories.forEach((category) => {
     return new Promise((resolve) => {
@@ -61,13 +65,16 @@ export function displayModalCategories(categories) {
   });
 }
 
+//applying filters to works
 export function filtering() {
   const buttonList = document.querySelectorAll(".filter button");
   const figureList = document.querySelectorAll(".gallery figure");
   const activeFilters = new Set();
+
   buttonList.forEach((button) => {
     button.addEventListener("click", () => {
       const filterCategory = button.id;
+
       if (filterCategory === "0") {
         activeFilters.clear();
         buttonList.forEach((btn) => btn.classList.remove("button-selected"));
@@ -80,6 +87,7 @@ export function filtering() {
           button.classList.add("button-selected");
         }
       }
+
       if (activeFilters.size === 0) {
         figureList.forEach((figure) => figure.classList.remove("hidden"));
       } else {
@@ -93,6 +101,7 @@ export function filtering() {
             figure.classList.add("hidden");
           }
         });
+
         if (!hasVisibleFigures) {
           figures.forEach((figure) => figure.classList.remove("hidden"));
         }
