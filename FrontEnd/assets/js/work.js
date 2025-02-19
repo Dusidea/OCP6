@@ -149,17 +149,32 @@ function verifierChamp(champ) {
   });
 }
 
-//reset add_form error messages
-const message = document.getElementById("add_form_error");
-const message_image_size = document.getElementById("add_form_error_image_size");
-const message_image_type = document.getElementById("add_form_error_image_type");
-const add_photo_button = document.getElementById("photo_button");
-add_photo_button.addEventListener("click", () => {
-  console.log("click photo hide message");
+//addWork form resets : resetting form values, image preview and error messages
+function resetForm() {
+  //closing modal after successful data gathering
+  const modal = document.getElementById("modal1");
+  modal.classList.add("hidden");
+
+  //reseting form values and image preview
+  const form = document.getElementById("addform");
+  form.reset();
+  const blocPhoto = document.querySelector(".modal_form_button");
+  blocPhoto.classList.remove("hidden");
+  const preview = document.getElementById("imagePreview");
+  preview.classList.add("hidden");
+
+  //reset add_form error messages
+  const message = document.getElementById("add_form_error");
+  const message_image_size = document.getElementById(
+    "add_form_error_image_size"
+  );
+  const message_image_type = document.getElementById(
+    "add_form_error_image_type"
+  );
   message.classList.add("hidden");
   message_image_size.classList.add("hidden");
   message_image_type.classList.add("hidden");
-});
+}
 
 //Allowing users to add a new media in the gallery
 export async function addWork() {
@@ -179,8 +194,7 @@ export async function addWork() {
     verifierChamp(image);
     verifierChamp(titre);
     verifierChamp(categorie);
-    const modal = document.getElementById("modal1");
-    modal.classList.add("hidden");
+    resetForm();
 
     const addResponse = await fetch("http://localhost:5678/api/works", {
       method: "POST",
@@ -190,6 +204,7 @@ export async function addWork() {
       },
       body: formData,
     });
+
     return addResponse;
   } catch (error) {
     console.log("Une erreur est survenue : " + error.message);
